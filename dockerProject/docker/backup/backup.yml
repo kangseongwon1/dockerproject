@@ -1,0 +1,62 @@
+version: "3"
+
+services: 
+  # docker run -d --name haproxy --net mynetwork -v $(pwd):/usr/local/etc/haproxy:ro \
+  # -p 80:80 -p 8404:8404 haproxytech/haproxy-alpine:2.4
+
+  httpd1:
+    container_name: httpd1
+    build: ../httpd/build
+    volumes:
+      - ../httpd/conf/:/etc/httpd/conf/
+      - ../httpd/conf.d/:/etc/httpd/conf.d/
+    ports:
+      - "8002:80"
+    depends_on:
+      - tomcat1
+      - tomcat2  
+  httpd2:
+    container_name: httpd2
+    build: ../httpd/build2
+    volumes:
+      - ../httpd/conf/:/etc/httpd/conf/
+      - ../httpd/conf.d/:/etc/httpd/conf.d/
+    ports:
+      - "8001:80"
+    depends_on:
+      - tomcat1
+      - tomcat2  
+
+  haproxy:
+    container_name: haproxy
+    image: haproxytech/haproxy-alpine:2.4
+
+    volumes: 
+      - "./config:/usr/local/etc/haproxy:ro"
+    ports:
+      - "8000:8000"
+      - "8404:8404"
+    depends_on:
+      - httpd1
+      - httpd2
+  tomcat1:
+    container_name: tomcat1
+    build: ../tomcat/build1
+    volumes:
+      - ../target/ROOT.war:/usr/local/tomcat/webapps/ROOT.war
+      - ../tomcat/conf1/:/usr/local/tomcat/conf/
+    expose:
+      - "8009"
+    ports:
+      - "8888:8080"
+    
+  tomcat2:
+    container_name: tomcat2
+    build: ../tomcat/build2
+    volumes:
+      - ../target2/ROOT.war:/usr/local/tomcat/webapps/ROOT.war
+      - ../tomcat/conf2/:/usr/local/tomcat/conf/
+    expose:
+      - "8019"
+    ports:
+      - "9999:8080"

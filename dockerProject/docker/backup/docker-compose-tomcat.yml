@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  tomcat1:
+    container_name: tomcat1
+    networks:
+      client1:
+        ipv4_address: 192.168.14.5   
+    build: ../tomcat/build1
+    volumes:
+      - ../target/ROOT.war:/usr/local/tomcat/webapps/ROOT.war
+      - ../tomcat/conf1/:/usr/local/tomcat/conf/
+    expose:
+      - "8009"
+    ports:
+      - "8888:8080"
+  tomcat2:
+    container_name: tomcat2
+    networks:
+      client1:
+        ipv4_address: 192.168.14.6   
+    build: ../tomcat/build2
+    volumes:
+      - ../target2/ROOT.war:/usr/local/tomcat/webapps/ROOT.war
+      - ../tomcat/conf2/:/usr/local/tomcat/conf/
+    expose:
+      - "8019"
+    ports:
+      - "9999:8080"
+
+networks: 
+  client1:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.14.0/24
+          gateway: 192.168.14.1      

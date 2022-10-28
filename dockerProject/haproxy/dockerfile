@@ -1,0 +1,7 @@
+#docker container run --privileged --net client1 --ip 192.168.14.2  -d -p 80:80 -p 9090:9090 -v config:/etc/haproxy --name "haproxy" gaia3d/haproxy /sbin/init
+FROM centos:7
+RUN yum install -y install make gcc perl pcre-devel zlib-devel openssl-devel haproxy && yum clean all
+COPY config/haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
+
+CMD ["/usr/sbin/haproxy","-D", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
+EXPOSE 8000 8404

@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  httpd1:
+    container_name: httpd1
+    networks:
+      client1:
+        ipv4_address: 192.168.14.3
+
+    build: ../httpd/build
+    volumes:
+      - ../httpd/conf/:/etc/httpd/conf/
+      - ../httpd/conf.d/:/etc/httpd/conf.d/
+    ports:
+      - "8001:80"
+  httpd2:
+    container_name: httpd2
+    networks:
+      client1:
+        ipv4_address: 192.168.14.4
+
+    build: ../httpd/build2
+    volumes:
+      - ../httpd/conf/:/etc/httpd/conf/
+      - ../httpd/conf.d/:/etc/httpd/conf.d/
+    ports:
+      - "8002:80"
+
+networks: 
+  client1:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.14.0/24
+          gateway: 192.168.14.1      

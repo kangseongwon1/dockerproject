@@ -1,0 +1,88 @@
+version: "3"
+
+services: 
+  haproxy:
+    container_name: haproxy
+    networks:
+      - client1
+    image: haproxytech/haproxy-debian:2.7
+
+    volumes: 
+      - "./config:/usr/local/etc/haproxy:ro"
+
+    ports:
+      - "8000:8000"
+      - "8404:8404"
+    depends_on:
+      - httpd1
+      - httpd2
+      - tomcat1
+      - tomcat2
+
+
+
+  tomcat1:
+    container_name: tomcat1
+    networks:
+      - client1
+        
+    build: ../tomcat/build1
+    volumes:
+      - ../target/ROOT.war:/usr/local/tomcat/webapps/ROOT.war
+      - ../tomcat/conf1/:/usr/local/tomcat/conf/
+    expose:
+      - "8009"
+    ports:
+      - "8888:8080"
+
+  tomcat2:
+    container_name: tomcat2
+    networks:
+      - client1
+        
+    build: ../tomcat/build2
+    volumes:
+      - ../target2/ROOT.war:/usr/local/tomcat/webapps/ROOT.war
+      - ../tomcat/conf2/:/usr/local/tomcat/conf/
+    expose:
+      - "8019"
+    ports:
+      - "9999:8080"
+
+  httpd1:
+    container_name: httpd1
+    networks:
+      - client1
+
+    build: ../httpd/build
+    volumes:
+      - ../httpd/conf/:/etc/httpd/conf/
+      - ../httpd/conf.d/:/etc/httpd/conf.d/
+    ports:
+      - "8001:80"
+    depends_on:
+      - tomcat1
+      - tomcat2      
+  httpd2:
+    container_name: httpd2
+    networks:
+      - client1
+
+
+    build: ../httpd/build2
+    volumes:
+      - ../httpd/conf/:/etc/httpd/conf/
+      - ../httpd/conf.d/:/etc/httpd/conf.d/
+    ports:
+      - "8002:80"
+    depends_on:
+      - tomcat1
+      - tomcat2
+networks:
+  client1:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.14.0/24
+          gateway: 192.168.14.1
