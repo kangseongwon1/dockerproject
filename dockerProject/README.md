@@ -1,4 +1,4 @@
-# Httpd(Apache), Tomcat Load Balancing & Session Clustering with Docker
+# LoadBalancer(Haproxy), Httpd(Apache), Tomcat Load Balancing & Session Clustering with Docker
 - Implementing 7Layer LoadBalancer and two front web server and two Tomcat servers using Docker.
 - 도커를 사용한 haproxy-httpd-tomcat 3Tier 웹 서버 구현.
 
