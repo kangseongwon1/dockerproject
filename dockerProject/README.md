@@ -1,10 +1,10 @@
 # Httpd(Apache), Tomcat Load Balancing & Session Clustering with Docker
-- Implementing a single web server and two Tomcat servers using Docker.
-- 도커를 사용한 httpd-tomcat 이중화 서버 구현.
+- Implementing 7Layer LoadBalancer and two front web server and two Tomcat servers using Docker.
+- 도커를 사용한 haproxy-httpd-tomcat 3Tier 웹 서버 구현.
 
 # Technologies Used
 - docker & docker-compose
-- apache, tomcat
+- apache, tomcat, haproxy
 - mod_jk, ajp/1.3
 
 # Versions used in Dockerfile
@@ -13,12 +13,14 @@
 - tomcat 9.0.45
 - tomcat-connectors 1.2.48
 - java-1.8.0-openjdk-devel.x86_64
+- haproxy
 
 # Configuration
 - httpd/conf
 - httpd/conf.d
 - tomcat/conf1
 - tomcat/conf2
+- haproxy/conf
 
 These directories are mapped to configuration directory each container and the target directory is mapped to webapps directory each tomcat container.
 
