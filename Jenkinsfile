@@ -3,11 +3,11 @@ node {
          checkout scm
      }
      stage('Build image') {
-         app = docker.build("github.com/kangseongwon1/dockerproject")
+         app = docker.build("ksw7734/docker")
          
      }
      stage('Push image') {
-         docker.withRegistry('https://github.com/kangseongwon1', 'repo-and-hook-access-token-credentials') {
+         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
              app.push("${env.BUILD_NUMBER}")
              app.push("latest")
          }
@@ -15,11 +15,11 @@ node {
 }
 
 stage('Build image') {
-  app = docker.build("github.com/kangseongwon1/dockerproject")
+  app = docker.build("ksw7734/docker")
 }
 
 stage('Push image') {
-  docker.withRegistry('https://github.com/kangseongwon1', 'repo-and-hook-access-token-credentials') 
+  docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') 
   {
      app.push("${env.BUILD_NUMBER}")
      app.push("latest")
