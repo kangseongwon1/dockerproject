@@ -1,4 +1,4 @@
 
 FROM alpine:3.10
 
-ENTRYPOINT ["echo", "hello2"]
+ENTRYPOINT ["echo", "hello3"]
