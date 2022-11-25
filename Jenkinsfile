@@ -11,14 +11,7 @@
             }
             
             stage('build'){
-                steps{
-                    dirs('backend'){
-                        sh'''
-                            echo build start
-                            ./test.sh
-                        '''
-                    }
-                }
+                sh "'/home/ksw7734/test/test.sh'"
             }
         }
     }
