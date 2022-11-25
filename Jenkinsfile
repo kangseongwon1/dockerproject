@@ -10,8 +10,15 @@
                 }
             }
             
-            stage('build'){
-                sh "'/home/ksw7734/test/test.sh'"
+        stage('build'){
+            steps{
+                dir('test'){
+                    sh'''
+                        echo build start
+                        ./test.sh
+                    '''
+                }
             }
         }
     }
+}
